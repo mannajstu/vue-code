@@ -102,24 +102,29 @@ img {vertical-align: middle;}
 }
 </style>
 </head>
-<body>
-
-<div class="slideshow-container" id="app">
+<body >
+<div id="app">
+<div class="slideshow-container" >
 
 <div class="mySlides fade">
-  <div class="numbertext">1 / 3</div>
+  <div class="numbertext">{{this.slide+1}} / {{dot}}</div>
   <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" style="width:100%">
   <div class="text">Caption Text</div>
 </div>
 
 <div class="mySlides fade">
-  <div class="numbertext">2 / 3</div>
+  <div class="numbertext">{{this.slide+1}} / {{dot}}</div>
   <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" style="width:100%">
   <div class="text">Caption Two</div>
 </div>
 
 <div class="mySlides fade">
-  <div class="numbertext">3 / 3</div>
+  <div class="numbertext">{{this.slide+1}} / {{dot}}</div>
+  <img src="https://www.w3schools.com/howto/img_mountains_wide.jpg" style="width:100%">
+  <div class="text">Caption Three</div>
+</div>
+<div class="mySlides fade">
+  <div class="numbertext">{{this.slide+1}} / {{dot}}</div>
   <img src="https://www.w3schools.com/howto/img_mountains_wide.jpg" style="width:100%">
   <div class="text">Caption Three</div>
 </div>
@@ -130,10 +135,10 @@ img {vertical-align: middle;}
 </div>
 <br>
 
-<div style="text-align:center">
-  <span class="dot" onclick="currentSlide(1)"></span> 
-  <span class="dot" onclick="currentSlide(2)"></span> 
-  <span class="dot" onclick="currentSlide(3)"></span> 
+<div style="text-align:center" >
+  <span class="dot " v-for="(n,index) in dot" @click="dotSlide(index)"></span> 
+  
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.7/dist/vue.js"></script>
 <script>
@@ -141,48 +146,62 @@ var app = new Vue({
   el: '#app',
   data: {
     display: "block",
-	slide:0
+	slide:0,
+	dot:0,
+	slides:""
   }
   
   ,
   methods: {
   plusSlides(n) {
-  var slides = document.getElementsByClassName("mySlides");
+  
+  this.dot=this.slides.length;
   if(n==1){
-  slides[this.slide].style.display = "none";
+  this.slides[this.slide].style.display = "none";
   this.slide++; 
   
-  if(this.slide>=slides.length){
+  if(this.slide>=this.slides.length){
   this.slide=0;
   
   }
-  slides[this.slide].style.display = this.display;
+  this.slides[this.slide].style.display = this.display;
   
  
    
   }
   else if(n==-1){
-  slides[this.slide].style.display = "none";
+  this.slides[this.slide].style.display = "none";
   this.slide--; 
   
   if(this.slide<0){
-  this.slide=slides.length-1;
+  this.slide=this.slides.length-1;
   
   }
-  slides[this.slide].style.display = this.display;
+  this.slides[this.slide].style.display = this.display;
   
   console.log(this.slide)
   
   }
   else{
-  slides[this.slide].style.display = this.display;
+  this.slides[this.slide].style.display = this.display;
   }
  
+  },
+  dotSlide(n) {
+  
+  for(i=0;i<this.slides.length;i++){
+  this.slides[i].style.display = "none";
+  }
+  
+  this.slides[n].style.display = this.display;
+  this.slide=n;
+  
+  
   }
 },
   created() {
     // `this` points to the vm instance
-	
+	this.slides = document.getElementsByClassName("mySlides");
 	this.plusSlides();
     console.log("allah")
   }
