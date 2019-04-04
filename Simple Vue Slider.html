@@ -136,7 +136,7 @@ img {vertical-align: middle;}
 <br>
 
 <div style="text-align:center" >
-  <span class="dot " v-for="(n,index) in dot" @click="dotSlide(index)"></span> 
+  <span class="dot " v-for="(n,index) in dot" @click="dotSlide(index)"  v-bind:class=" index === 0 ? 'active' : ''"></span> 
   
 </div>
 </div>
@@ -148,14 +148,16 @@ var app = new Vue({
     display: "block",
 	slide:0,
 	dot:0,
-	slides:""
+	slides:"",
+	dots:"",
+	 active: 'active',
   }
   
   ,
   methods: {
   plusSlides(n) {
   
-  this.dot=this.slides.length;
+  
   if(n==1){
   this.slides[this.slide].style.display = "none";
   this.slide++; 
@@ -165,7 +167,7 @@ var app = new Vue({
   
   }
   this.slides[this.slide].style.display = this.display;
-  
+  this.dotSlide(this.slide);
  
    
   }
@@ -178,13 +180,17 @@ var app = new Vue({
   
   }
   this.slides[this.slide].style.display = this.display;
+  this.dotSlide(this.slide);
   
-  console.log(this.slide)
+ 
   
   }
   else{
   this.slides[this.slide].style.display = this.display;
+  
+   
   }
+  
  
   },
   dotSlide(n) {
@@ -192,8 +198,12 @@ var app = new Vue({
   for(i=0;i<this.slides.length;i++){
   this.slides[i].style.display = "none";
   }
-  
+  for(i=0;i<this.dots.length;i++){
+  this.dots[i].classList.remove("active")
+  }
   this.slides[n].style.display = this.display;
+  
+  this.dots[n].className += " active";
   this.slide=n;
   
   
@@ -202,6 +212,9 @@ var app = new Vue({
   created() {
     // `this` points to the vm instance
 	this.slides = document.getElementsByClassName("mySlides");
+	this.dots = document.getElementsByClassName("dot");
+	this.dot=this.slides.length;
+	
 	this.plusSlides();
     console.log("allah")
   }
